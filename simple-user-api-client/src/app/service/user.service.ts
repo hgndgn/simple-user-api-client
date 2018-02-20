@@ -7,13 +7,21 @@ import {User} from './../model/user';
 
 @Injectable()
 export class UserService {
-  url = 'http://localhost:8080/users';
+  url = 'http://localhost:8080/users/';
   users: User[];
   constructor(private http: Http) {}
 
   getAll() {
     return this.http.get(this.url).map(data => {
-      return data.json();
+      this.users = data.json();
+      return this.users;
+    })
+  }
+
+  get(username:string) {
+    // return this.users.filter(u => u.username.toLowerCase() == username.toLowerCase());
+    return this.http.get(this.url + username).map(user => {
+      return (user.json() as User);
     })
   }
 }
