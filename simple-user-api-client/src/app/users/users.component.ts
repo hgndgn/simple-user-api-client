@@ -1,6 +1,6 @@
-import { User } from './../model/user';
 import {Component, OnInit} from '@angular/core';
 
+import {User} from './../model/user';
 import {UserService} from './../service/user.service';
 
 @Component({
@@ -9,9 +9,9 @@ import {UserService} from './../service/user.service';
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent {
-  users:User[];
+  users: User[];
 
   constructor(private userService: UserService) {
-    this.users = this.userService.getAll();
+    this.userService.getAll().subscribe(users => this.users = users);
   }
 }
