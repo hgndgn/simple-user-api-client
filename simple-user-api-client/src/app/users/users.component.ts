@@ -14,4 +14,8 @@ export class UsersComponent {
   constructor(private userService: UserService) {
     this.userService.getAll().subscribe(users => this.users = users);
   }
+
+  onDelete() {
+    
+  }
 }
