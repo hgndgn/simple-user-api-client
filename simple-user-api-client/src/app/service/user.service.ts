@@ -1,4 +1,5 @@
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/take';
 
 import {Injectable, OnInit} from '@angular/core';
 import {Http} from '@angular/http';
@@ -24,8 +25,19 @@ export class UserService {
     })
   }
 
+  create(user: User) {
+    this.http.post(this.url, user).take(1).subscribe(res => console.log(res));
+  }
+
   update(user: User) {
     this.http.put(this.url + user.username, user)
-        .subscribe(res => {console.log(res.json())});
+        .take(1)
+        .subscribe(res => console.log(res));
+  }
+
+  delete(username: string) {
+    this.http.delete(this.url + username)
+        .take(1)
+        .subscribe(res => console.log(res));
   }
 }
