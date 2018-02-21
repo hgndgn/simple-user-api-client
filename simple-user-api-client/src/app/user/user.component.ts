@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 
 import {User} from '../model/user';
@@ -12,13 +12,23 @@ import {UserService} from './../service/user.service';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent {
-  user: User;
-  username:string = '';
-  email:string = '';
+  user: User = {} as User;
+  username: string = '';
+  email: string = '';
+  header: string;
+  isEdit: boolean;
 
-  constructor(private userService: UserService, private route: ActivatedRoute) {
+  constructor(
+      private userService: UserService, private route: ActivatedRoute,
+      private router: Router) {
     let username = this.route.snapshot.paramMap.get('username');
-    if (username) {
+    console.log(username);
+    if (username == 'create-user') {
+      this.header = 'Create User';
+      this.isEdit = false;
+    } else if (username) {
+      this.header = 'Edit User';
+      this.isEdit = true;
       this.userService.get(username).subscribe(user => {
         this.user = user;
         this.username = user.username;
@@ -28,8 +38,15 @@ export class UserComponent {
   }
 
   onSubmit() {
+    if (!this.username || !this.email) return;
     this.user.username = this.username;
     this.user.email = this.email;
-    this.userService.update(this.user);
+
+    if (this.isEdit)
+      this.userService.update(this.user);
+    else
+      this.userService.create(this.user);
+
+    this.router.navigate(['/users']);
   }
 }
