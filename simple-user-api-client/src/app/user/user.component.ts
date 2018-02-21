@@ -12,10 +12,24 @@ import {UserService} from './../service/user.service';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent {
-  user$: Observable<User>;
+  user: User;
+  username:string = '';
+  email:string = '';
 
   constructor(private userService: UserService, private route: ActivatedRoute) {
     let username = this.route.snapshot.paramMap.get('username');
-    if (username) this.user$ = this.userService.get(username);
+    if (username) {
+      this.userService.get(username).subscribe(user => {
+        this.user = user;
+        this.username = user.username;
+        this.email = user.email;
+      })
+    }
+  }
+
+  onSubmit() {
+    this.user.username = this.username;
+    this.user.email = this.email;
+    this.userService.update(this.user);
   }
 }
