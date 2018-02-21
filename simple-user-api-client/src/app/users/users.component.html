@@ -18,7 +18,7 @@
       <td>{{ u.email }}</td>
       <td>
         <button class="btn btn-info" [routerLink]="['/users/', u.username]">Edit</button>
-        <button class="btn btn-danger" (click)="onDelete(u.id)">Delete</button>
+        <button class="btn btn-danger" (click)="onDelete(u)">Delete</button>
       </td>
     </tr>
   </tbody>

@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
 
 import {User} from './../model/user';
 import {UserService} from './../service/user.service';
@@ -15,9 +16,9 @@ export class UsersComponent {
     this.userService.getAll().subscribe(users => this.users = users);
   }
 
-  onDelete(id) {
-    if (confirm("Do you want to delete user ?")){
-      this.userService.delete(id);
+  onDelete(user) {
+    if (confirm('Do you want to delete user ?')) {
+      this.userService.delete(user);
     }
   }
 }
