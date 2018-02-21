@@ -18,9 +18,14 @@ export class UserService {
     })
   }
 
-  get(username:string) {
+  get(username: string) {
     return this.http.get(this.url + username).map(user => {
       return (user.json() as User);
     })
+  }
+
+  update(user: User) {
+    this.http.put(this.url + user.username, user)
+        .subscribe(res => {console.log(res.json())});
   }
 }
