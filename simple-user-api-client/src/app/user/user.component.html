@@ -1,5 +1,21 @@
-<div *ngIf="user$ | async as user">
-  <p> {{ user.username }}</p>
-  <p> {{ user.email }}</p>
-  <p> {{ user.password }}</p>
+<div class="form">
+  <h2>Edit User</h2>
+  <hr>
+  <form (ngSubmit)="onSubmit()" class="form">
+
+    <div class="form-group">
+      <label>Username</label>
+      <input class="form-control" [(ngModel)]="username" name="uname">
+    </div>
+
+    <div>
+      <label>Email address</label>
+      <input class="form-control" type="email" [(ngModel)]="email" name="email">
+    </div>
+    <br>
+    <div class="form-group">
+      <button class="btn btn-secondary" [routerLink]="['users']">Back</button>
+      <button class="btn btn-primary" type="submit">Save</button>
+    </div>
+  </form>
 </div>
