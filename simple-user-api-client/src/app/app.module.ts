@@ -14,7 +14,8 @@ import {UsersComponent} from './users/users.component';
   imports: [
     BrowserModule, HttpModule, RouterModule.forRoot([
       {path: 'users/:username', component: UserComponent},
-      {path: 'users', component: UsersComponent}
+      {path: 'users', component: UsersComponent},
+      {path: '**', redirectTo: 'users'}
     ])
   ],
   providers: [UserService],
