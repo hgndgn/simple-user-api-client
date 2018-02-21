@@ -19,7 +19,6 @@ export class UserService {
   }
 
   get(username:string) {
-    // return this.users.filter(u => u.username.toLowerCase() == username.toLowerCase());
     return this.http.get(this.url + username).map(user => {
       return (user.json() as User);
     })
