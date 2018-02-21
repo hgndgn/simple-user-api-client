@@ -35,8 +35,8 @@ export class UserService {
         .subscribe(res => console.log(res));
   }
 
-  delete(username: string) {
-    this.http.delete(this.url + username)
+  delete(id) {
+    this.http.delete(this.url + id)
         .take(1)
         .subscribe(res => console.log(res));
   }
