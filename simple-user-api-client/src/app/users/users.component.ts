@@ -15,5 +15,9 @@ export class UsersComponent {
     this.userService.getAll().subscribe(users => this.users = users);
   }
 
-  onDelete() {}
+  onDelete(id) {
+    if (confirm("Do you want to delete user ?")){
+      this.userService.delete(id);
+    }
+  }
 }
