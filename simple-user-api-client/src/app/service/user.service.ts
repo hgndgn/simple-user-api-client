@@ -40,4 +40,10 @@ export class UserService {
         .take(1)
         .subscribe(res => console.log(res));
   }
+
+  deleteByUsername(username) {
+    this.http.delete("http://localhost:8080/users" + '?username=' + username)
+        .take(1)
+        .subscribe(res => console.log(res));
+  }
 }
