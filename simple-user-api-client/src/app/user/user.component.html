@@ -1,21 +1,27 @@
-<div class="form">
-  <h2>{{ header }}</h2>
-  <hr>
-  <form (ngSubmit)="onSubmit()" class="form">
+<div class="container mt-5">
+    <h2>{{ header }}</h2>
+    <hr style="border-color: black">
+  <div class="form mt-5">
+    <form (ngSubmit)="onSubmit()" class="form">
 
-    <div class="form-group">
-      <label>Username</label>
-      <input class="form-control" [(ngModel)]="username" name="uname">
-    </div>
+      <div class="form-group">
+        <label>Username</label>
+        <input class="form-control" [(ngModel)]="username" name="uname">
+      </div>
 
-    <div>
-      <label>Email address</label>
-      <input class="form-control" type="email" [(ngModel)]="email" name="email">
-    </div>
-    <br>
-    <div class="form-group">
-      <button class="btn btn-secondary" [routerLink]="['users']">Back</button>
-      <button class="btn btn-primary" type="submit">Save</button>
-    </div>
-  </form>
+      <div class="form-group">
+        <label>Email address</label>
+        <input class="form-control" type="email" [(ngModel)]="email" name="email">
+      </div>
+      
+      <div class="form-group">
+        <button class="btn btn-secondary btn-block" [routerLink]="['users']">
+          <fa name="fas fa-arrow-left" style="margin-right: 10px;"></fa>Back
+        </button>
+        <button class="btn btn-primary btn-block" type="submit">
+          <fa name="fas fa-save" style="margin-right: 10px;"></fa>Save
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
