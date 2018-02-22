@@ -14,6 +14,10 @@ export class UsersComponent {
   users: User[];
 
   constructor(private userService: UserService) {
+  }
+
+  ngOnInit() {
+    console.log("OnInit");
     this.userService.getAll().subscribe(users => this.users = users);
   }
 

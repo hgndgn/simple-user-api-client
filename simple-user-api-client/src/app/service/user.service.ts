@@ -42,15 +42,21 @@ export class UserService implements OnInit {
 
   update(user: User) {
     this.http.put(this.url + user.username, user)
-        .take(1)
         .subscribe(res => console.log(res));
   }
 
   deleteByUsername(username) {
     return this.http
-        .delete(
-            'http://localhost:8080/users' +
-            '?username=' + username)
+        .delete(this.url + username)
         .map(res => {return res});
   }
+
+    // also works
+  // deleteByUsername(username) {
+  //   return this.http
+  //       .delete(
+  //           'http://localhost:8080/users' +
+  //           '?username=' + username)
+  //       .map(res => {return res});
+  // }
 }
