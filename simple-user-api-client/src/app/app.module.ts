@@ -8,12 +8,13 @@ import {AppComponent} from './app.component';
 import {UserService} from './service/user.service';
 import {UserComponent} from './user/user.component';
 import {UsersComponent} from './users/users.component';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 
 @NgModule({
   declarations: [AppComponent, UserComponent, UsersComponent],
   imports: [
-    BrowserModule, HttpModule, FormsModule, RouterModule.forRoot([
+    BrowserModule, HttpModule, FormsModule, AngularFontAwesomeModule, RouterModule.forRoot([
       {path: 'users/:username', component: UserComponent},
       {path: 'users/create-user', component: UserComponent},
       {path: 'users', component: UsersComponent},
