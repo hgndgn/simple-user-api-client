@@ -15,7 +15,7 @@ export class UserComponent {
   user: User = {} as User;
   username: string = '';
   email: string = '';
-  header: string;
+  header: string = '';
   isEdit: boolean;
 
   constructor(
@@ -28,6 +28,7 @@ export class UserComponent {
     } else if (username) {
       this.header = 'Edit User';
       this.isEdit = true;
+
       this.userService.getByUsername(username).subscribe(user => {
         this.user = user;
         this.username = user.username;
@@ -41,11 +42,18 @@ export class UserComponent {
     this.user.username = this.username;
     this.user.email = this.email;
 
-    if (this.isEdit)
-      this.userService.update(this.user);
-    else
-      this.userService.create(this.user);
-
-    this.router.navigate(['/users']);
+    if (this.isEdit) {
+      this.userService.update(this.user).subscribe(res => {
+        if (res.status === 200) {
+          this.router.navigate(['/users']);
+        }
+      })
+    } else {
+      this.userService.create(this.user).subscribe(res => {
+        if (res.status === 200) {
+          this.router.navigate(['/users']);
+        }
+      })
+    }
   }
 }
