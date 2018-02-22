@@ -20,6 +20,10 @@ export class UsersComponent {
     this.userService.getAll().subscribe(users => this.users = users);
   }
 
+  refreshList() {
+    this.userService.getAll().subscribe(users => this.users = users);    
+  }
+
   onDelete(user) {
     if (confirm('Do you want to delete user ?')) {
       let index = this.users.indexOf(user);
