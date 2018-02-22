@@ -3,8 +3,12 @@
   <hr style="border-color: black">
   <div class="mt-4">
 
-    <div *ngIf="success" class="alert alert-success" role="alert">
+    <div *ngIf="success && !error" class="alert alert-success" role="alert">
       User <strong>{{ action }}</strong> successfully
+    </div>
+
+    <div *ngIf="error && !success" class="alert alert-warning" role="alert">
+        User does not exist!
     </div>
 
     <form (ngSubmit)="onSubmit()" class="form">
@@ -21,10 +25,10 @@
 
       <div class="form-group">
         <button class="btn btn-secondary btn-block" [routerLink]="['users']">
-          <fa name="fas fa-arrow-left" style="margin-right: 10px;"></fa>Back
+          <fa name="fas fa-arrow-left" style="margin-right: 10px;"></fa>BACK
         </button>
         <button class="btn btn-primary btn-block" type="submit">
-          <fa name="fas fa-save" style="margin-right: 10px;"></fa>Save
+          <fa name="fas fa-save" style="margin-right: 10px;"></fa>SAVE
         </button>
       </div>
     </form>
