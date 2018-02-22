@@ -22,8 +22,8 @@ export class UserService {
   }
 
   getByUsername(username: string) {
-    return this.http.get(this.url + username).map(user => {
-      return (user.json() as User);
+    return this.http.get(this.url + username).map(res => {
+      return res;
     })
   }
 
