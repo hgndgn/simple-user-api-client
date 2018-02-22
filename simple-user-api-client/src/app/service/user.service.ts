@@ -1,18 +1,16 @@
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/take';
 
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 
 import {User} from './../model/user';
 
 @Injectable()
-export class UserService implements OnInit {
+export class UserService {
   url = 'http://localhost:8080/users/';
-  users: User[];
-  constructor(private http: Http) {}
-
-  ngOnInit() {
+  users: User[] = [];
+  constructor(private http: Http) {
     this.getAll();
   }
 
@@ -42,22 +40,10 @@ export class UserService implements OnInit {
   }
 
   update(user: User) {
-    return this.http.put(this.url + user.username, user)
-        .map(res => res);
+    return this.http.put(this.url + user.username, user).map(res => res);
   }
 
   deleteByUsername(username) {
-    return this.http
-        .delete(this.url + username)
-        .map(res => {return res});
+    return this.http.delete(this.url + username).map(res => res);
   }
-
-    // also works
-  // deleteByUsername(username) {
-  //   return this.http
-  //       .delete(
-  //           'http://localhost:8080/users' +
-  //           '?username=' + username)
-  //       .map(res => {return res});
-  // }
 }
