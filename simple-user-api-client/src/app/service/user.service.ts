@@ -41,8 +41,8 @@ export class UserService implements OnInit {
   }
 
   update(user: User) {
-    this.http.put(this.url + user.username, user)
-        .subscribe(res => console.log(res));
+    return this.http.put(this.url + user.username, user)
+        .map(res => res);
   }
 
   deleteByUsername(username) {
