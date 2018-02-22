@@ -30,13 +30,14 @@ export class UserService implements OnInit {
   }
 
   create(user: User) {
-    this.http.post(this.url, user).take(1).subscribe(res => {
+    return this.http.post(this.url, user).map(res => {
       if (res.status == 200) {
         this.users.push(user);
       } else {
         // handle error
         console.log(res);
       }
+      return res;
     })
   }
 
