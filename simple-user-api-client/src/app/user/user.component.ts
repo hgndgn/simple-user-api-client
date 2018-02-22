@@ -16,7 +16,9 @@ export class UserComponent {
   username: string = '';
   email: string = '';
   header: string = '';
+  action: string = '';
   isEdit: boolean;
+  success: boolean;
 
   constructor(
       private userService: UserService, private route: ActivatedRoute,
@@ -45,15 +47,30 @@ export class UserComponent {
     if (this.isEdit) {
       this.userService.update(this.user).subscribe(res => {
         if (res.status === 200) {
-          this.router.navigate(['/users']);
+          this.action = 'updated';
+          this.success = true;
+        } else {
+          this.success = false;
+          // handle error
         }
       })
     } else {
       this.userService.create(this.user).subscribe(res => {
         if (res.status === 200) {
-          this.router.navigate(['/users']);
+          this.action = 'created';
+          this.success = true;
+          this.resetForm();
+        } else {
+          this.success = false;
+          // handle error
         }
       })
     }
+  }
+
+  resetForm() {
+    this.user = {} as User;
+    this.username = '';
+    this.email = '';
   }
 }
