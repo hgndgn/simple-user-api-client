@@ -18,6 +18,8 @@ export class UserComponent {
   email: string = '';
   header: string = '';
   action: string = '';
+  editUser: string = 'Edit User';
+  createUser: string = 'Create User';
   isEdit: boolean;
   success: boolean;
   error: boolean;
@@ -28,12 +30,12 @@ export class UserComponent {
     let username = this.route.snapshot.paramMap.get('username');
 
     if (username == 'create-user') {
-      this.header = 'Create User';
+      this.header = this.createUser;
       this.isEdit = false;
     } else if (username) {
       this.userService.getByUsername(username).subscribe(res => {
         if (res['_body']) {
-          this.header = 'Edit User';
+          this.header = this.editUser;
           this.isEdit = true;
 
           let tmpUser = res.json();
@@ -41,7 +43,7 @@ export class UserComponent {
           this.username = tmpUser.username;
           this.email = tmpUser.email;
         } else {
-          this.header = 'Create User';
+          this.header = this.createUser;
           this.error = true;
         }
       })
@@ -56,7 +58,7 @@ export class UserComponent {
     if (this.isEdit) {
       this.userService.update(this.user).take(1).subscribe(res => {
         if (res.status === 200) {
-          this.action = 'updated';
+          this.action = 'edited';
           this.success = true;
           this.updateURL(this.username);
         } else {
