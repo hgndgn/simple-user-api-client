@@ -33,7 +33,10 @@ export class UserService implements OnInit {
     this.http.post(this.url, user).take(1).subscribe(res => {
       if (res.status == 200) {
         this.users.push(user);
-      };
+      } else {
+        // handle error
+        console.log(res);
+      }
     })
   }
 
@@ -43,18 +46,11 @@ export class UserService implements OnInit {
         .subscribe(res => console.log(res));
   }
 
-  delete(user) {
-    this.http.delete(this.url + JSON.stringify(user.id)).take(1).subscribe(res => {
-      console.log(res);
-    })
-  }
-
   deleteByUsername(username) {
-    this.http
+    return this.http
         .delete(
             'http://localhost:8080/users' +
             '?username=' + username)
-        .take(1)
-        .subscribe(res => console.log(res));
+        .map(res => {return res});
   }
 }
