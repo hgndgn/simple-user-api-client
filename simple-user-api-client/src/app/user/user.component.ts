@@ -22,14 +22,13 @@ export class UserComponent {
       private userService: UserService, private route: ActivatedRoute,
       private router: Router) {
     let username = this.route.snapshot.paramMap.get('username');
-    console.log(username);
     if (username == 'create-user') {
       this.header = 'Create User';
       this.isEdit = false;
     } else if (username) {
       this.header = 'Edit User';
       this.isEdit = true;
-      this.userService.get(username).subscribe(user => {
+      this.userService.getByUsername(username).subscribe(user => {
         this.user = user;
         this.username = user.username;
         this.email = user.email;

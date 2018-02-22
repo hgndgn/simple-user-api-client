@@ -23,7 +23,7 @@ export class UserService implements OnInit {
     })
   }
 
-  get(username: string) {
+  getByUsername(username: string) {
     return this.http.get(this.url + username).map(user => {
       return (user.json() as User);
     })
