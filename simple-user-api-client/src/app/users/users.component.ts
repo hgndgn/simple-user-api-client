@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/take';
 
@@ -17,7 +17,6 @@ export class UsersComponent {
   }
 
   ngOnInit() {
-    console.log("OnInit");
     this.userService.getAll().subscribe(users => this.users = users);
   }
 
