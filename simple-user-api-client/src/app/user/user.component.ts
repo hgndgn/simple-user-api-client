@@ -31,7 +31,10 @@ export class UserComponent {
       private userService: UserService, private route: ActivatedRoute,
       private router: Router) {
     let username = this.route.snapshot.paramMap.get('username');
+    this.init(username);
+  }
 
+  init(username:string) {
     if (username == 'add-user') {
       this.header = this.createUser;
       this.isEdit = false;
@@ -64,6 +67,7 @@ export class UserComponent {
         if (res['status'] === 200) {
           this.action = 'edited';
           this.success = true;
+          this.init(this.user.username);
         } else {
           this.success = false;
           // handle error
