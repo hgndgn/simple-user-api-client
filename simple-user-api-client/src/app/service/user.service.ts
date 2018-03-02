@@ -1,8 +1,13 @@
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw'
+import 'rxjs/add/observable/fromPromise';
 
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
+import {Observable} from 'rxjs/Observable';
 
 import {User} from './../model/user';
 
@@ -11,7 +16,7 @@ export class UserService {
   url = 'http://localhost:8080/users/';
   users: User[] = [];
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private httpCli: HttpClient) {
     this.getAll();
   }
 
@@ -23,7 +28,13 @@ export class UserService {
   }
 
   getByUsername(username: string) {
-    return this.http.get(this.url + username).map(res => res);
+    return this.httpCli.get(this.url + username)
+        .map((user:User) => {
+          return user;
+        })
+        .catch((err:HttpErrorResponse) => {
+          return Observable.of(err);
+        });
   }
 
   createFormData(user: User) {

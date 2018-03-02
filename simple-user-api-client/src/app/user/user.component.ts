@@ -1,3 +1,6 @@
+import 'rxjs/add/observable/of';
+
+import {HttpErrorResponse, HttpEventType} from '@angular/common/http';
 import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
@@ -34,24 +37,26 @@ export class UserComponent {
     this.init(username);
   }
 
-  init(username:string) {
+  init(username: string) {
     if (username == 'add-user') {
       this.header = this.createUser;
       this.isEdit = false;
     } else if (username) {
-      this.userService.getByUsername(username).subscribe(res => {
-        if (res['_body']) {
+      this.userService.getByUsername(username).take(1).subscribe(res => {
+        if (res instanceof HttpErrorResponse) {
+          this.router.navigate(['user-not-found']);
+        } else if (!res['username']) {
+          this.header = this.createUser;
+          this.userExistsError = true;
+        } else {
           this.header = this.editUser;
           this.isEdit = true;
 
-          let jsonUser = res.json();
+          let jsonUser = res;
           this.user = jsonUser;
           this.username = jsonUser.username;
           this.email = jsonUser.email;
           this.photo = jsonUser['photo'];
-        } else {
-          this.header = this.createUser;
-          this.userExistsError = true;
         }
       })
     }
@@ -63,7 +68,7 @@ export class UserComponent {
     this.user.email = this.email;
 
     if (this.isEdit) {
-      this.userService.update(this.user, this.photo).subscribe(res => {
+      this.userService.update(this.user, this.photo).take(1).subscribe(res => {
         if (res['status'] === 200) {
           this.action = 'edited';
           this.success = true;
@@ -74,7 +79,7 @@ export class UserComponent {
         }
       })
     } else {
-      this.userService.create(this.user, this.photo).subscribe(res => {
+      this.userService.create(this.user, this.photo).take(1).subscribe(res => {
         if (res['status'] === 200) {
           this.action = 'created';
           this.success = true;
