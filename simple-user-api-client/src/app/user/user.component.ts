@@ -1,6 +1,6 @@
 import 'rxjs/add/observable/of';
 
-import {HttpErrorResponse, HttpEventType} from '@angular/common/http';
+import {HttpErrorResponse, HttpEventType, HttpResponseBase} from '@angular/common/http';
 import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
@@ -68,30 +68,62 @@ export class UserComponent {
     this.user.email = this.email;
 
     if (this.isEdit) {
-      this.userService.update(this.user, this.photo).take(1).subscribe(res => {
-        if (res['status'] === 200) {
-          this.action = 'edited';
-          this.success = true;
-          this.init(this.user.username);
-        } else {
-          this.success = false;
-          // handle error
-        }
-      })
+      this.update();
     } else {
-      this.userService.create(this.user, this.photo).take(1).subscribe(res => {
-        if (res['status'] === 200) {
+      this.create();
+    }
+  }
+
+  private create() {
+    this.userService.create(this.user, this.photo).take(1).subscribe(res => {
+      switch (res.status) {
+        case 200:
           this.action = 'created';
           this.success = true;
           this.userExistsError = false;
           this.resetForm();
-        } else {
+          break;
+        case 400:
           this.success = false;
-          // handle error
-        }
-      })
-    }
+          console.error('bad request: create(): user exists already');
+          break;
+        case 415:
+          this.success = false;
+          console.error('wrong media type: create()');
+          break;
+        default:
+          this.success = false;
+          console.error('create()', res);
+          break;
+      }
+    })
   }
+
+  private update() {
+    this.userService.update(this.user, this.photo).subscribe(res => {
+      switch (res.status) {
+        case 200:
+          this.action = 'edited';
+          this.success = true;
+          this.init(this.user.username);
+          break;
+        case 415:
+          this.success = false;
+          console.error('wrong media type: update()');
+          break;
+        case 500:
+          this.success = false;
+          console.error('internal server error: update()');
+          break;
+        default:
+          this.success = false;
+          console.error('update()', res);
+          break;
+      }
+    })
+  }
+
+  private handleError(res: Response) {}
 
   onPhotoSelected(inp: HTMLInputElement) {
     this.photo = inp.files.item(0);
