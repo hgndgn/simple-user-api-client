@@ -29,10 +29,34 @@ export class UserService {
 
   getByUsername(username: string) {
     return this.httpCli.get(this.url + username)
-        .map((user:User) => {
+        .map((user: User) => {
           return user;
         })
-        .catch((err:HttpErrorResponse) => {
+        .catch((err: HttpErrorResponse) => {
+          return Observable.of(err);
+        });
+  }
+
+  create(user: User, photo?: File) {
+    let formData = this.createFormData(user);
+    if (photo) formData.append('file', photo);
+    return this.http.post(this.url + 'add-user', formData)
+        .map(res => {
+          return res;
+        })
+        .catch((err: Response) => {
+          return Observable.of(err);
+        });
+  }
+
+  update(user: User, photo?: File) {
+    let formData = this.createFormData(user);
+    if (photo) formData.append('file', photo);
+    return this.http.put(this.url + user.username, formData)
+        .map(res => {
+          return res;
+        })
+        .catch((err: Response) => {
           return Observable.of(err);
         });
   }
@@ -43,19 +67,13 @@ export class UserService {
     return formData;
   }
 
-  create(user: User, photo?: File) {
-    let formData = this.createFormData(user);
-    if (photo) formData.append('file', photo);
-    return this.http.post(this.url + 'add-user', formData).map(res => res);
-  }
-
-  update(user: User, photo?: File) {
-    let formData = this.createFormData(user);
-    if (photo) formData.append('file', photo);
-    return this.http.put(this.url + user.username, formData).map(res => res);
-  }
-
   deleteByUsername(username) {
-    return this.http.delete(this.url + username).map(res => res);
+    return this.http.delete(this.url + username)
+        .map(res => {
+          return res;
+        })
+        .catch((res: Response) => {
+          return Observable.of(res);
+        });
   }
 }
