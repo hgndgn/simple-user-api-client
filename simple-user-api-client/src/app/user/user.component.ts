@@ -17,7 +17,7 @@ import {UserService} from './../service/user.service';
 export class UserComponent {
   editUser: string = 'Edit User';
   createUser: string = 'Create User';
-
+  
   user: User = {} as User;
   username: string = '';
   email: string = '';
@@ -25,10 +25,12 @@ export class UserComponent {
 
   header: string = '';
   action: string = '';
-
   isEdit: boolean = false;
+
   success: boolean = false;
-  userExistsError: boolean = false;
+  userNotExistsError: boolean = false;
+  usernameExistsError: boolean = false;
+  wrongMediaTypeError: boolean = false;
 
   constructor(
       private userService: UserService, private route: ActivatedRoute,
@@ -45,9 +47,6 @@ export class UserComponent {
       this.userService.getByUsername(username).take(1).subscribe(res => {
         if (res instanceof HttpErrorResponse) {
           this.router.navigate(['user-not-found']);
-        } else if (!res['username']) {
-          this.header = this.createUser;
-          this.userExistsError = true;
         } else {
           this.header = this.editUser;
           this.isEdit = true;
@@ -63,7 +62,9 @@ export class UserComponent {
   }
 
   onSubmit(photoInp: HTMLInputElement) {
-    if (!this.username || !this.email) return;
+    if (!this.username || !this.email) {
+      return;
+    }
     this.user.username = this.username;
     this.user.email = this.email;
 
@@ -80,15 +81,17 @@ export class UserComponent {
         case 200:
           this.action = 'created';
           this.success = true;
-          this.userExistsError = false;
+          this.userNotExistsError = false;
           this.resetForm();
           break;
         case 400:
           this.success = false;
+          this.usernameExistsError = true;
           console.error('bad request: create(): user exists already');
           break;
         case 415:
           this.success = false;
+          this.wrongMediaTypeError = true;
           console.error('wrong media type: create()');
           break;
         default:
@@ -109,6 +112,7 @@ export class UserComponent {
           break;
         case 415:
           this.success = false;
+          this.wrongMediaTypeError = true;
           console.error('wrong media type: update()');
           break;
         case 500:
@@ -123,10 +127,13 @@ export class UserComponent {
     })
   }
 
-  private handleError(res: Response) {}
-
   onPhotoSelected(inp: HTMLInputElement) {
     this.photo = inp.files.item(0);
+  }
+
+  resetErrors() {
+    this.usernameExistsError = false;
+    this.userNotExistsError = false;
   }
 
   resetForm() {

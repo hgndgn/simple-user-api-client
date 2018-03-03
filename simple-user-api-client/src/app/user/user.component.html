@@ -3,15 +3,26 @@
   <hr style="border-color: black">
   <div class="mt-4">
 
+    <!-- FEEDBACK DIVS -->
     <div *ngIf="success && !error" class="alert alert-success" role="alert">
       User
       <strong>{{ action }}</strong> successfully
     </div>
 
-    <div *ngIf="userExistsError && !success" class="alert alert-warning" role="alert">
+    <div *ngIf="userNotExistsError && !success" class="alert alert-warning" role="alert">
       User does not exist!
     </div>
 
+    <div *ngIf="usernameExistsError && !success" class="alert alert-warning" role="alert">
+      Username exists already! <br> Please choose another username.
+    </div>  
+    
+    <div *ngIf="wrongMediaTypeError && !success" class="alert alert-warning" role="alert">
+      Wrong Media Type! <br> Your photo can be only of type "png" or "jpeg". 
+    </div>  
+
+
+    <!--  FORM  -->
     <form (ngSubmit)="onSubmit(inp)" class="form" enctype="multipart/form-data">
 
       <div class="row">
